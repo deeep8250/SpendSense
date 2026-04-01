@@ -5,3 +5,5 @@ create table if not exists users(
     hashed_password varchar(255) not null,
     created_at timestamp default now()
 );
+
+create index if not exists idx_users_email on users(email);
