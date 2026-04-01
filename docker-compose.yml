@@ -1,0 +1,27 @@
+services:
+ app:
+  build: .
+  #  this is port binding for the app it means local machine can access the app 
+  # through this port : container will run on this port (so the port set to localmachine redirect the connection to the container port)
+  # r.run(":8080") in main.go actually decide the container port because it will run inside the container 
+  # so if   r.run(":8080") then the _ : 8080 <- because thats where container run
+  ports:
+   - "8000:8080"
+  env_file:
+   - .env
+  depends_on:
+   - db  
+ db:
+  image: postgres:15-alpine
+  ports:
+   - "5433:5432"
+  environment:
+    POSTGRES_USER: spendsense
+    POSTGRES_PASSWORD: spendsense123
+    POSTGRES_DB: spendsense_db
+  volumes:
+   - postgres_data:/var/lib/postgresql/data   
+
+
+volumes:
+  postgres_data:
