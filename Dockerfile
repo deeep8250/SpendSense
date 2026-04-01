@@ -13,4 +13,4 @@ FROM alpine:latest
 WORKDIR /app
 COPY --from=builder /app/spendsense .
 EXPOSE 8080
-CMD [ "./replog" ]
+CMD [ "./spendsense" ]
