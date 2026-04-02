@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -42,12 +41,7 @@ func main() {
 
 	//dependency injection
 	r := gin.Default()
-	r.GET("/health", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{
-			"response": "server is running",
-		})
-
-	})
+	Routes(r)
 	r.Run(":8080")
 
 }
