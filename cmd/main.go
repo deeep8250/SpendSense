@@ -12,12 +12,8 @@ import (
 )
 
 func main() {
-	// .env load
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	log.Fatalf("Error loading .env: %v", err)
-	// }
 
+	// db connection
 	DSN := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		os.Getenv("DB_HOST"),
 		os.Getenv("DB_PORT"),
@@ -43,7 +39,6 @@ func main() {
 	}
 
 	fmt.Println("database connect successfully")
-	// db connection
 
 	//dependency injection
 	r := gin.Default()
