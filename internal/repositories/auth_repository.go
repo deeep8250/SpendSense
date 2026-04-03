@@ -1,6 +1,9 @@
 package repositories
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/deeep8250/SpendSense/models"
 	"github.com/jmoiron/sqlx"
 )
@@ -29,6 +32,10 @@ func (r *AuthRepository) LoginUser(user *models.Login) (*models.User, error) {
 	query := `select * from users where email=$1`
 	err := r.db.Get(&DBuser, query, user.Email)
 	if err != nil {
+		if strings.Contains(err.Error(), "duplicate key") {
+			return nil, fmt.Errorf("email already exists")
+		}
+
 		return nil, err
 	}
 	return &DBuser, err

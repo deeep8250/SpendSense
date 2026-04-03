@@ -9,10 +9,10 @@ import (
 )
 
 type AuthHandler struct {
-	service *services.AuthService
+	service services.ServiceInterface
 }
 
-func NewAuthHanler(Service *services.AuthService) *AuthHandler {
+func NewAuthHanler(Service services.ServiceInterface) *AuthHandler {
 	return &AuthHandler{
 		service: Service,
 	}
@@ -32,6 +32,15 @@ func (h *AuthHandler) Register(c *gin.Context) {
 
 	err = h.service.Register(&user)
 	if err != nil {
+
+		if err.Error() == "email already exists" {
+			c.JSON(http.StatusConflict, gin.H{
+				"error": err.Error(),
+			})
+			return
+
+		}
+
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
