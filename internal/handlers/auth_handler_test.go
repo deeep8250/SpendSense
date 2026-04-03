@@ -93,3 +93,88 @@ func TestRegister(t *testing.T) {
 	}
 
 }
+
+func TestLogin(t *testing.T) {
+	tests := []struct {
+		Name               string
+		UserInput          models.Login
+		Token              string
+		ServiceError       error
+		ExpectedStatusCode int
+	}{
+
+		{
+			Name: "login Success",
+			UserInput: models.Login{
+
+				Email:    "deep@gmail.com",
+				Password: "deep@123",
+			},
+			Token: "1234567890",
+
+			ServiceError:       nil,
+			ExpectedStatusCode: 200,
+		},
+		{
+			Name: "incorrect password",
+			UserInput: models.Login{
+
+				Email:    "deep@gmail.com",
+				Password: "de@123",
+			},
+			Token:              "",
+			ServiceError:       errors.New("crypto/bcrypt: hashedPassword is not the hash of the given password"),
+			ExpectedStatusCode: 401,
+		},
+		{
+			Name: "invalid email",
+			UserInput: models.Login{
+
+				Email:    "deepgmail.com",
+				Password: "deep@123",
+			},
+			Token:              "",
+			ServiceError:       nil,
+			ExpectedStatusCode: 400,
+		},
+		{
+			Name: "email is not exist",
+			UserInput: models.Login{
+
+				Email:    "deep@gmail.com",
+				Password: "deep@123",
+			},
+			Token:              "",
+			ServiceError:       errors.New("user not found"),
+			ExpectedStatusCode: 401,
+		},
+	}
+
+	for _, tt := range tests {
+
+		t.Run(tt.Name, func(t *testing.T) {
+
+			mockingService := mocks.ServiceMocking{
+				LoginFunc: func(userInput *models.Login) (string, error) {
+					return tt.Token, tt.ServiceError
+				},
+			}
+
+			handler := NewAuthHanler(&mockingService)
+			r := gin.Default()
+			r.POST("/login", handler.Login)
+
+			bodyBytes, _ := json.Marshal(tt.UserInput)
+			req, _ := http.NewRequest(http.MethodPost, "/login", bytes.NewBufferString(string(bodyBytes)))
+			w := httptest.NewRecorder()
+			r.ServeHTTP(w, req)
+
+			if w.Code != tt.ExpectedStatusCode {
+				t.Errorf("expected %d got %d ", tt.ExpectedStatusCode, w.Code)
+			}
+
+		})
+
+	}
+
+}
