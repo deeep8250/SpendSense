@@ -45,12 +45,23 @@ func main() {
 
 	fmt.Println("database connect successfully")
 
-	//dependency injection
+	//dependency injection for authentication
 	AuthRepository := repositories.NewAuthRepository(db)
 	AuthService := services.NewAuthService(AuthRepository)
 	AuthHandler := handler.NewAuthHanler(AuthService)
+
+	//dependency injection for categroy
+	CategoryRepository := repositories.NewCategoryRepository(db)
+	CategoryService := services.NewCategoryService(CategoryRepository)
+	CategoryHandler := handler.NewCategoryHandler(CategoryService)
+
+	//dependency injection for expenses
+	ExpenseRepository := repositories.NewExpenseRepository(db)
+	ExpenseServices := services.NewExpenseService(ExpenseRepository)
+	ExpenseHandler := handler.NewExpenseHandler(ExpenseServices)
+
 	r := gin.Default()
-	Routes(r, AuthHandler)
+	Routes(r, AuthHandler, CategoryHandler, ExpenseHandler)
 	r.Run(":8080")
 
 }
