@@ -17,4 +17,5 @@ func Routes(r *gin.Engine, authHandler *authHandler.AuthHandler) {
 	})
 
 	r.POST("/register", authHandler.Register)
+	r.POST("/login", authHandler.Login)
 }

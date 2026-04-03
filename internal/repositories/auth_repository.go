@@ -23,3 +23,14 @@ func (r *AuthRepository) RegisterUser(user models.User) error {
 	}
 	return nil
 }
+
+func (r *AuthRepository) LoginUser(user *models.Login) (*models.User, error) {
+	var DBuser models.User
+	query := `select * from users where email=$1`
+	err := r.db.Get(&DBuser, query, user.Email)
+	if err != nil {
+		return nil, err
+	}
+	return &DBuser, err
+
+}
