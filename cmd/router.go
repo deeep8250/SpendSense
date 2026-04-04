@@ -31,9 +31,10 @@ func Routes(r *gin.Engine, authHandler *handler.AuthHandler, categoryHandler *ha
 		protected.POST("/category", categoryHandler.CreateCategory)
 
 		// expenses
-		protected.GET("/expense", expenseHandler.GetAllExpensesHandler)
+		protected.GET("/expenses", expenseHandler.GetAllExpensesByFilters)
 		protected.GET("/expense/:id", expenseHandler.GetSingleExpenseHandler)
 		protected.POST("/expense", expenseHandler.CreateExpenseHandler)
 		protected.DELETE("/expense/:id", expenseHandler.DeleteExpenseHandler)
+
 	}
 }
