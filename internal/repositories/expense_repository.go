@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/deeep8250/SpendSense/models"
 	"github.com/jmoiron/sqlx"
@@ -65,4 +66,42 @@ func (e *ExpenseRepository) RemoveExpense(user_id, expense_id int) (string, erro
 	}
 
 	return "deleted", nil
+}
+
+func (e *ExpenseRepository) GetAllExpensesByVariousFilters(userID int, categoryID, source, Date string) ([]models.Expense, error) {
+
+	query := `select *from expenses where user_id=$1`
+	args := []any{userID}
+	argsCount := 1
+	if categoryID != "" {
+		argsCount++
+		query += fmt.Sprintf(" and category_id=$%d", argsCount)
+
+		args = append(args, categoryID)
+
+	}
+
+	if source != "" {
+		argsCount++
+		query += fmt.Sprintf(" and source=$%d", argsCount)
+
+		args = append(args, source)
+
+	}
+
+	if Date != "" {
+		argsCount++
+		query += fmt.Sprintf(" and date=$%d", argsCount)
+
+		args = append(args, Date)
+
+	}
+
+	var expenses []models.Expense
+	err := e.db.Select(&expenses, query, args...)
+	if err != nil {
+		return nil, err
+	}
+	return expenses, nil
+
 }

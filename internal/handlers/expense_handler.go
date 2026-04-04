@@ -142,3 +142,31 @@ func (h *ExpenseHandler) GetAllExpensesHandler(c *gin.Context) {
 		"expenses": expenses,
 	})
 }
+
+func (h *ExpenseHandler) GetAllExpensesByFilters(c *gin.Context) {
+
+	userID, ok := c.Get("userID")
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "unauthorized user",
+		})
+		return
+	}
+
+	categoryID := c.Query("category_id")
+	source := c.Query("source")
+	date := c.Query("date")
+
+	expenses, err := h.services.GetAllExpensesByDifferentFilter(userID.(int), categoryID, source, date)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"expenses": expenses,
+	})
+
+}

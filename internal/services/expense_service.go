@@ -45,3 +45,11 @@ func (s *ExpenseService) CreateExpense(expense models.Expense) error {
 	}
 	return nil
 }
+
+func (s *ExpenseService) GetAllExpensesByDifferentFilter(userID int, categoryID, source, Date string) ([]models.Expense, error) {
+	expenses, err := s.repo.GetAllExpensesByVariousFilters(userID, categoryID, source, Date)
+	if err != nil {
+		return nil, err
+	}
+	return expenses, nil
+}
