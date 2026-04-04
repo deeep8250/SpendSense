@@ -24,7 +24,7 @@ type User struct {
 type Category struct {
 	Id        int       `db:"id" json:"id"`
 	Name      string    `db:"name" json:"name" binding:"required"`
-	UserID    int       `db:"user_id" json:"user_id" `
+	UserID    *int      `db:"user_id" json:"user_id" `
 	CreatedAT time.Time `db:"created_at" json:"created_at"`
 }
 
@@ -48,4 +48,13 @@ type Budget struct {
 	Month      int       `db:"month" json:"month"`
 	Year       int       `db:"year" json:"year"`
 	CreatedAT  time.Time `db:"created_at" json:"created_at"`
+}
+
+type AiParserResponseHolder struct {
+	Amount      int
+	Merchant    string
+	Category    string
+	Description string
+	Source      string
+	Date        string
 }

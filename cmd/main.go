@@ -62,7 +62,7 @@ func main() {
 
 	//dependency injection for expenses
 	ExpenseRepository := repositories.NewExpenseRepository(db)
-	ExpenseServices := services.NewExpenseService(ExpenseRepository)
+	ExpenseServices := services.NewExpenseService(ExpenseRepository, CategoryRepository)
 	ExpenseHandler := handler.NewExpenseHandler(ExpenseServices)
 
 	r := gin.Default()

@@ -105,3 +105,14 @@ func (e *ExpenseRepository) GetAllExpensesByVariousFilters(userID int, categoryI
 	return expenses, nil
 
 }
+
+func (e *ExpenseRepository) ExpenseParser(expense models.AiParserResponseHolder, category_id, user_id int) error {
+	query := `insert into expenses(amount,merchant,category_id,description,user_id,date,source) values($1,$2,$3,$4,$5,$6,$7)`
+	_, err := e.db.Exec(query, expense.Amount, expense.Merchant, category_id, expense.Description, user_id, expense.Date, expense.Source)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}

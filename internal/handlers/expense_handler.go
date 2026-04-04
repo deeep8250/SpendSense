@@ -170,3 +170,38 @@ func (h *ExpenseHandler) GetAllExpensesByFilters(c *gin.Context) {
 	})
 
 }
+
+func (h *ExpenseHandler) SetParserExpense(c *gin.Context) {
+
+	userID, ok := c.Get("userID")
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "unauthorized user",
+		})
+		return
+	}
+
+	var input struct {
+		Message string `json:"message" binding:"required"`
+	}
+	err := c.ShouldBindJSON(&input)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	err = h.services.ParseAiExpense(input.Message, userID.(int))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{
+		"response": "created",
+	})
+
+}

@@ -35,3 +35,16 @@ func (r *CategoryRepository) CreateCategory(category models.Category) error {
 	return nil
 
 }
+
+func (r *CategoryRepository) GetCategoryByName(userID int, category_name string) (int, error) {
+
+	var cat_id int
+	query := `select id from categories where  name=$1 and (user_id=$2 or user_id is null)`
+	err := r.db.Get(&cat_id, query, category_name, userID)
+	if err != nil {
+		return 0, err
+	}
+
+	return cat_id, nil
+
+}
