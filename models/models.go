@@ -35,7 +35,7 @@ type Expense struct {
 	CategoryID  int       `db:"category_id" json:"category_id" binding:"required"`
 	Description string    `db:"description" json:"description" binding:"required"`
 	UserID      int       `db:"user_id" json:"user_id"`
-	Date        time.Time `db:"date" json:"date" binding:"required"`
+	Date        string    `db:"date" json:"date" binding:"required"`
 	Source      string    `db:"source" json:"source"`
 	CreatedAT   time.Time `db:"created_at" json:"created_at"`
 }

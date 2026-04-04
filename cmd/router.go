@@ -27,14 +27,14 @@ func Routes(r *gin.Engine, authHandler *handler.AuthHandler, categoryHandler *ha
 	protected.Use(middleware.Middleware())
 	//category
 	{
-		protected.GET("/category", categoryHandler.GetCategories)
-		protected.POST("/category", categoryHandler.CreateCategory)
+		protected.GET("/categories", categoryHandler.GetCategories)
+		protected.POST("/categories", categoryHandler.CreateCategory)
 
 		// expenses
 		protected.GET("/expenses", expenseHandler.GetAllExpensesByFilters)
-		protected.GET("/expense/:id", expenseHandler.GetSingleExpenseHandler)
-		protected.POST("/expense", expenseHandler.CreateExpenseHandler)
-		protected.DELETE("/expense/:id", expenseHandler.DeleteExpenseHandler)
+		protected.GET("/expenses/:id", expenseHandler.GetSingleExpenseHandler)
+		protected.POST("/expenses", expenseHandler.CreateExpenseHandler)
+		protected.DELETE("/expenses/:id", expenseHandler.DeleteExpenseHandler)
 
 	}
 }
