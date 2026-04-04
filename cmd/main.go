@@ -7,14 +7,19 @@ import (
 	"time"
 
 	handler "github.com/deeep8250/SpendSense/internal/handlers"
+	Parser "github.com/deeep8250/SpendSense/internal/parser"
 	"github.com/deeep8250/SpendSense/internal/repositories"
 	"github.com/deeep8250/SpendSense/internal/services"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
 func main() {
+	_ = godotenv.Load()
+	//calling the AI Parser API
+	Parser.AiParser("spent 250 at Starbucks for coffee yesterday", []string{"Dining", "Transport", "Groceries", "Entertainment", "Other"})
 
 	// db connection
 	DSN := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
