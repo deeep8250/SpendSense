@@ -1,6 +1,9 @@
 package repositories
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/deeep8250/SpendSense/models"
 	"github.com/jmoiron/sqlx"
 )
@@ -30,6 +33,11 @@ func (r *CategoryRepository) CreateCategory(category models.Category) error {
 	query := `insert into categories (name,user_id) values($1,$2)`
 	_, err := r.db.Exec(query, category.Name, category.UserID)
 	if err != nil {
+
+		if strings.Contains(err.Error(), "duplicate key") {
+			return fmt.Errorf("CATEGORY already exists")
+		}
+
 		return err
 	}
 	return nil

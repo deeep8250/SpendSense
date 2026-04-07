@@ -59,7 +59,8 @@ func (h *Categoryhandler) CreateCategory(c *gin.Context) {
 		return
 	}
 
-	category.UserID = userID.(*int)
+	uid := userID.(int)
+	category.UserID = &uid
 	err = h.services.CreateCategory(category)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
