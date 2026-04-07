@@ -9,9 +9,9 @@ type BudgetService struct {
 	BudgetRepo *repositories.BudgetRepository
 }
 
-func NewBudgetService(Repo repositories.BudgetRepository) *BudgetService {
+func NewBudgetService(Repo *repositories.BudgetRepository) *BudgetService {
 	return &BudgetService{
-		BudgetRepo: &Repo,
+		BudgetRepo: Repo,
 	}
 }
 
@@ -31,8 +31,8 @@ func (s *BudgetService) GetBudgetService(userID int) ([]models.Budget, error) {
 	}
 	return budgets, nil
 }
-func (s *BudgetService) SummaryRepoService(budget models.Budget) ([]models.InsightSummary, error) {
-	summary, err := s.BudgetRepo.SummaryRepo(budget)
+func (s *BudgetService) SummaryRepoService(userID, month, year int) ([]models.InsightSummary, error) {
+	summary, err := s.BudgetRepo.SummaryRepo(userID, month, year)
 	if err != nil {
 		return nil, err
 	}

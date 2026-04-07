@@ -43,10 +43,10 @@ type Expense struct {
 type Budget struct {
 	Id         int       `db:"id" json:"id"`
 	UserID     int       `db:"user_id" json:"user_id"`
-	CategoryID int       `db:"category_id" json:"category_id"`
+	CategoryID int       `db:"category_id" json:"category_id" binding:"required"`
 	Amount     float64   `db:"amount" json:"amount" binding:"required"`
-	Month      int       `db:"month" json:"month"`
-	Year       int       `db:"year" json:"year"`
+	Month      int       `db:"month" json:"month" binding:"required"`
+	Year       int       `db:"year" json:"year" binding:"required"`
 	CreatedAT  time.Time `db:"created_at" json:"created_at"`
 }
 

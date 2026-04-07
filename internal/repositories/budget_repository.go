@@ -15,7 +15,7 @@ func NewBudgetRepository(DB *sqlx.DB) *BudgetRepository {
 }
 
 func (r *BudgetRepository) CreateBudget(budget models.Budget) error {
-	query := `insert into budget(user_id,category_id,amount,month,year) values($1,$2,$3,$4,$5)`
+	query := `insert into budgets(user_id,category_id,amount,month,year) values($1,$2,$3,$4,$5)`
 	_, err := r.db.Exec(query, budget.UserID, budget.CategoryID, budget.Amount, budget.Month, budget.Year)
 	if err != nil {
 		return err
@@ -25,7 +25,7 @@ func (r *BudgetRepository) CreateBudget(budget models.Budget) error {
 
 func (r *BudgetRepository) GetBudgets(userID int) ([]models.Budget, error) {
 	var budgets []models.Budget
-	query := `select * from budget where user_id=$1`
+	query := `select * from budgets where user_id=$1`
 	err := r.db.Select(&budgets, query, userID)
 	if err != nil {
 		return nil, err
@@ -54,7 +54,7 @@ func (r *BudgetRepository) BudgetAlert(userID int) ([]models.BudgetAlert, error)
 	return BudgetAlertHold, err
 }
 
-func (r *BudgetRepository) SummaryRepo(userBudget models.Budget) ([]models.InsightSummary, error) {
+func (r *BudgetRepository) SummaryRepo(userId, month, year int) ([]models.InsightSummary, error) {
 	var Summary []models.InsightSummary
 	query := `SELECT c.name AS category, COALESCE(SUM(e.amount), 0) AS total 
 	          FROM expenses e JOIN categories c ON e.category_id = c.id 
@@ -63,7 +63,7 @@ func (r *BudgetRepository) SummaryRepo(userBudget models.Budget) ([]models.Insig
 			  AND EXTRACT(YEAR FROM e.date) = $3 
 			  GROUP BY c.name`
 
-	err := r.db.Select(&Summary, query, userBudget.UserID, userBudget.Month, userBudget.Year)
+	err := r.db.Select(&Summary, query, userId, month, year)
 	if err != nil {
 		return nil, err
 	}
