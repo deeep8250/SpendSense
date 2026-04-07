@@ -65,8 +65,13 @@ func main() {
 	ExpenseServices := services.NewExpenseService(ExpenseRepository, CategoryRepository)
 	ExpenseHandler := handler.NewExpenseHandler(ExpenseServices)
 
+	// dependency injection for budgets
+	BudgetRepository := repositories.NewBudgetRepository(db)
+	BudgetServices := services.NewBudgetService(BudgetRepository)
+	BudetHandler := handler.NewBudgetHandler(BudgetServices)
+
 	r := gin.Default()
-	Routes(r, AuthHandler, CategoryHandler, ExpenseHandler)
+	Routes(r, AuthHandler, CategoryHandler, ExpenseHandler, BudetHandler)
 	r.Run(":8080")
 
 }
