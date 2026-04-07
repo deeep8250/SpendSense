@@ -44,6 +44,7 @@ func Routes(r *gin.Engine, authHandler *handler.AuthHandler, categoryHandler *ha
 		protected.GET("/budgets/summary", budgetHandler.SummaryRepoHandler)
 		protected.GET("/budget/top_merchant", budgetHandler.TopMerchantHandler)
 		protected.GET("/budget/trend", budgetHandler.TrendHandler)
+		protected.GET("/budgets/alerts", budgetHandler.AlertHandler)
 
 	}
 }

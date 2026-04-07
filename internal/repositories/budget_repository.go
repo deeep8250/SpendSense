@@ -1,6 +1,9 @@
 package repositories
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/deeep8250/SpendSense/models"
 	"github.com/jmoiron/sqlx"
 )
@@ -18,6 +21,10 @@ func (r *BudgetRepository) CreateBudget(budget models.Budget) error {
 	query := `insert into budgets(user_id,category_id,amount,month,year) values($1,$2,$3,$4,$5)`
 	_, err := r.db.Exec(query, budget.UserID, budget.CategoryID, budget.Amount, budget.Month, budget.Year)
 	if err != nil {
+		if strings.Contains(err.Error(), "duplicate key") {
+			return fmt.Errorf("budget already exists for this category and month")
+		}
+
 		return err
 	}
 	return nil
