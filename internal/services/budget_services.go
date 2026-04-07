@@ -52,3 +52,11 @@ func (s *BudgetService) TrendService(userID int) ([]models.SpendingTrend, error)
 	}
 	return Trending, nil
 }
+
+func (s *BudgetService) BudgetAlertService(userID int) ([]models.BudgetAlert, error) {
+	budgetAlert, err := s.BudgetRepo.BudgetAlert(userID)
+	if err != nil {
+		return nil, err
+	}
+	return budgetAlert, err
+}

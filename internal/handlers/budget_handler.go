@@ -163,3 +163,26 @@ func (h *BudgetHandler) TrendHandler(c *gin.Context) {
 	})
 
 }
+func (h *BudgetHandler) AlertHandler(c *gin.Context) {
+
+	userID, ok := c.Get("userID")
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "unauthorized user",
+		})
+		return
+	}
+
+	alerts, err := h.BudgetServices.BudgetAlertService(userID.(int))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"alerts": alerts,
+	})
+
+}
