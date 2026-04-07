@@ -58,3 +58,26 @@ type AiParserResponseHolder struct {
 	Source      string
 	Date        string
 }
+
+type BudgetAlert struct {
+	ID           int     `db:"id" json:"id"`
+	CategoryID   int     `db:"category_id" json:"category_id"`
+	BudgetAmount float64 `db:"budget_amount" json:"budget_amount"`
+	TotalSpent   float64 `db:"total_spent" json:"total_spent"`
+}
+
+type InsightSummary struct {
+	Category string  `db:"category" json:"category"`
+	Total    float64 `db:"total" json:"total"`
+}
+
+type TopMerchant struct {
+	Merchant string  `db:"merchant" json:"merchant"`
+	Total    float64 `db:"total" json:"total"`
+}
+
+type SpendingTrend struct {
+	Month int     `db:"month" json:"month"`
+	Year  int     `db:"year" json:"year"`
+	Total float64 `db:"total" json:"total"`
+}
