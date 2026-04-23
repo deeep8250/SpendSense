@@ -32,8 +32,8 @@ func (r *AuthRepository) LoginUser(user *models.Login) (*models.User, error) {
 	query := `select * from users where email=$1`
 	err := r.db.Get(&DBuser, query, user.Email)
 	if err != nil {
-		if strings.Contains(err.Error(), "duplicate key") {
-			return nil, fmt.Errorf("email already exists")
+		if err == sql.ErrNoRows {
+			return nil, errors.New("invalid email or password")
 		}
 
 		return nil, err
